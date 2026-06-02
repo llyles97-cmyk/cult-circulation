@@ -1,0 +1,2196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cult Circulation — Culture Intelligence Publication</title>
+  <meta name="description" content="Cult Circulation documents how culture moves through music, fandom, nightlife, internet communities, fashion, technology, and influence systems." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #0A0A0A;
+      --cream:    #F5F1E8;
+      --cream-2:  #FAFAF7;
+      --oxblood:  #5A1E24;
+      --oxblood-2:#7A2830;
+      --espresso: #3A2B24;
+      --gold:     #B69B5C;
+      --gold-lt:  #CDB87A;
+      --mid:      #111009;
+      --border-lt: rgba(10,10,10,0.1);
+      --border-dk: rgba(245,241,232,0.08);
+      --border-gold: rgba(182,155,92,0.35);
+      --dim-dk:   rgba(245,241,232,0.38);
+      --dim-lt:   rgba(10,10,10,0.45);
+      --serif:    'Playfair Display', Georgia, serif;
+      --sans:     'Inter', system-ui, sans-serif;
+      --mono:     'JetBrains Mono', 'Courier New', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream-2);
+      color: var(--black);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── PAGE VIEWS ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar {
+      position: fixed;
+      top: 62px; left: 0;
+      height: 2px;
+      background: var(--oxblood);
+      z-index: 200;
+      transition: width 0.1s linear;
+      width: 0;
+    }
+
+    /* ══════════════════ NAVIGATION ══════════════════ */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(250,250,247,0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-lt);
+      transition: box-shadow 0.3s;
+    }
+    #nav.scrolled { box-shadow: 0 1px 0 rgba(182,155,92,0.25); }
+
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.25rem, 4vw, 3rem);
+      gap: 2rem;
+    }
+
+    /* Wordmark — mirrors logo: italic serif "Culture" + bold sans "Circulation" */
+    .wordmark {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .wm-culture {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--black);
+      letter-spacing: 0.01em;
+      line-height: 1;
+    }
+    .wm-sep { display: none; }
+    .wm-circulation {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--black);
+      line-height: 1;
+      margin-left: 0.4rem;
+      padding-top: 2px;
+    }
+    .wordmark:hover .wm-culture { color: var(--oxblood); }
+    .wordmark:hover .wm-circulation { color: var(--oxblood); }
+
+    /* CC Monogram mark */
+    .cc-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--black);
+      flex-shrink: 0;
+    }
+    .cc-mark svg { width: 16px; height: 16px; }
+
+    .nav-left { display: flex; align-items: center; gap: 0.75rem; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(1.25rem, 2.5vw, 2.25rem);
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--dim-lt);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--black); }
+
+    .nav-issue {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      color: var(--dim-lt);
+      background: rgba(10,10,10,0.05);
+      border: 1px solid var(--border-lt);
+      padding: 0.2rem 0.6rem;
+      white-space: nowrap;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--black);
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 62px; left: 0; right: 0;
+      background: rgba(250,250,247,0.99);
+      z-index: 99;
+      padding: 1.5rem clamp(1.25rem, 4vw, 3rem) 2rem;
+      border-bottom: 1px solid var(--border-lt);
+      backdrop-filter: blur(16px);
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu a {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim-lt);
+      text-decoration: none;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--border-lt);
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .mobile-menu a:hover { color: var(--black); }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    /* ══════════════════ SHARED ══════════════════ */
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 3rem);
+    }
+
+    .oxblood-rule {
+      display: inline-block;
+      width: 2.25rem;
+      height: 2px;
+      background: var(--oxblood);
+      flex-shrink: 0;
+    }
+
+    .section-label-lt {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim-lt);
+    }
+    .section-label-dk {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    ::selection { background: var(--oxblood); color: var(--cream); }
+
+    /* ══════════════════ HERO ══════════════════ */
+    #hero {
+      padding-top: 62px;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 55% 45%;
+      background: var(--black);
+    }
+
+    .hero-left {
+      padding: clamp(3.5rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4.5rem) clamp(3.5rem, 8vw, 7rem) clamp(1.25rem, 5vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--border-dk);
+    }
+
+    .hero-kicker {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .hero-kicker-text {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    h1.hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 5.5vw, 5.8rem);
+      font-weight: 900;
+      line-height: 1.0;
+      color: var(--cream);
+      margin-bottom: 1.75rem;
+      letter-spacing: -0.02em;
+    }
+    h1.hero-headline em {
+      font-style: italic;
+      color: rgba(245,241,232,0.7);
+    }
+
+    .hero-deck {
+      font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+      line-height: 1.65;
+      color: rgba(245,241,232,0.55);
+      max-width: 500px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-byline {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      color: rgba(245,241,232,0.35);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .hero-byline strong { color: var(--gold); font-weight: 400; }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream);
+      background: var(--oxblood);
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      cursor: pointer;
+      align-self: flex-start;
+    }
+    .hero-cta:hover { background: var(--oxblood-2); }
+
+    /* Hero right — editorial visual panel */
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Editorial photo placeholder — atmospheric CSS art */
+    .hero-visual {
+      position: absolute;
+      inset: 0;
+      background: #0D0A08;
+    }
+
+    /* Grain texture via SVG filter */
+    .hero-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.4;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 200px;
+    }
+
+    /* Moody gradient composition — suggests a figure under stage light */
+    .hero-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 60% 30%, rgba(90,30,36,0.55) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 30% 70%, rgba(182,155,92,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 100% at 50% 0%, rgba(58,43,36,0.8) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(13,10,8,0.3) 0%, rgba(13,10,8,0.9) 100%);
+    }
+
+    /* Abstract geometric shapes suggesting a DJ booth / crowd */
+    .hero-geo {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+    .hg-circle-1 {
+      position: absolute;
+      top: 15%; left: 20%;
+      width: 55%; aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(182,155,92,0.15);
+    }
+    .hg-circle-2 {
+      position: absolute;
+      top: 30%; left: 35%;
+      width: 30%; aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(90,30,36,0.4);
+      background: radial-gradient(circle, rgba(90,30,36,0.15) 0%, transparent 70%);
+    }
+    .hg-line-1 {
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent 5%, rgba(182,155,92,0.12) 30%, rgba(182,155,92,0.12) 70%, transparent 95%);
+    }
+    .hg-line-2 {
+      position: absolute;
+      left: 50%; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(182,155,92,0.1) 30%, rgba(182,155,92,0.1) 70%, transparent);
+    }
+    .hg-rect {
+      position: absolute;
+      bottom: 25%; left: 15%;
+      width: 45%; height: 28%;
+      border: 1px solid rgba(90,30,36,0.3);
+      transform: rotate(-2deg);
+    }
+    .hg-dot {
+      position: absolute;
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    .hero-visual-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2.5rem;
+    }
+    .hero-img-caption {
+      font-family: var(--mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(182,155,92,0.5);
+      margin-bottom: 0.5rem;
+    }
+    .hero-pull {
+      font-family: var(--serif);
+      font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+      font-style: italic;
+      color: rgba(245,241,232,0.65);
+      line-height: 1.4;
+      border-left: 2px solid var(--oxblood);
+      padding-left: 1rem;
+    }
+
+    /* Large ghost text watermark */
+    .hero-vol {
+      position: absolute;
+      top: 0; right: 0;
+      font-family: var(--sans);
+      font-size: clamp(6rem, 18vw, 14rem);
+      font-weight: 900;
+      color: rgba(245,241,232,0.025);
+      line-height: 0.85;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+      letter-spacing: -0.05em;
+    }
+
+    /* Ticker tape bottom strip */
+    .hero-ticker {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 36px;
+      background: var(--oxblood);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      z-index: 3;
+    }
+    .ticker-track {
+      display: flex;
+      gap: 0;
+      animation: ticker 30s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-item {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,241,232,0.7);
+      padding: 0 2rem;
+    }
+    .ticker-dot {
+      color: rgba(245,241,232,0.3);
+      font-size: 0.5rem;
+    }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ══════════════════ SECONDARY STORIES ══════════════════ */
+    #secondary {
+      background: var(--cream-2);
+      border-bottom: 1px solid var(--border-lt);
+    }
+
+    .secondary-inner {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      border-left: 1px solid var(--border-lt);
+      border-right: 1px solid var(--border-lt);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .secondary-sidebar {
+      padding: 3rem 2rem;
+      border-right: 1px solid var(--border-lt);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background: var(--cream);
+    }
+    .secondary-sidebar-label {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim-lt);
+      writing-mode: horizontal-lr;
+    }
+    .sidebar-issue-big {
+      font-family: var(--serif);
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--oxblood);
+      line-height: 1;
+      margin-top: auto;
+    }
+    .sidebar-issue-label {
+      font-family: var(--mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.12em;
+      color: var(--dim-lt);
+      text-transform: uppercase;
+    }
+
+    .stories-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .story-card {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid var(--border-lt);
+      cursor: pointer;
+      transition: background 0.25s;
+      display: flex;
+      flex-direction: column;
+    }
+    .story-card:last-child { border-right: none; }
+    .story-card:hover { background: var(--cream); }
+
+    .card-category {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--oxblood);
+      margin-bottom: 0.4rem;
+    }
+    .card-issue {
+      font-family: var(--mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.1em;
+      color: var(--dim-lt);
+      margin-bottom: 1rem;
+    }
+    .card-headline {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--black);
+      margin-bottom: 0.85rem;
+      transition: color 0.2s;
+    }
+    .story-card:hover .card-headline { color: var(--oxblood); }
+
+    .card-summary {
+      font-size: 0.83rem;
+      line-height: 1.6;
+      color: var(--dim-lt);
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+    .card-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-lt);
+      padding-top: 1rem;
+    }
+    .card-read {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: var(--dim-lt);
+      text-transform: uppercase;
+    }
+    .card-arrow {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: var(--oxblood);
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      text-transform: uppercase;
+    }
+    .story-card:hover .card-arrow { opacity: 1; transform: translateX(3px); }
+
+    /* ══════════════════ LATEST GRID ══════════════════ */
+    #latest {
+      background: #fff;
+      border-bottom: 1px solid var(--border-lt);
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      gap: 1rem;
+    }
+
+    .section-title-lt {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+      font-weight: 700;
+      color: var(--black);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-link {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dim-lt);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .section-link:hover { color: var(--oxblood); border-color: var(--oxblood); }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border-lt);
+    }
+
+    .grid-card {
+      padding: 2rem;
+      cursor: pointer;
+      transition: background 0.25s;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-lt);
+      border-bottom: 1px solid var(--border-lt);
+    }
+    .grid-card:nth-child(3n) { border-right: none; }
+    .grid-card:nth-last-child(-n+3) { border-bottom: none; }
+    .grid-card:hover { background: var(--cream-2); }
+
+    /* Visual swatch per card — editorial photo placeholder */
+    .card-visual {
+      height: 140px;
+      margin: -2rem -2rem 1.5rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Unique editorial art per card */
+    .cv-nightlife-philly {
+      background:
+        radial-gradient(ellipse 70% 90% at 30% 60%, rgba(90,30,36,0.7) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(182,155,92,0.2) 0%, transparent 60%),
+        linear-gradient(135deg, #1a0d0f 0%, #0a0806 60%, #1a1008 100%);
+    }
+    .cv-culture-parasocial {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(58,43,36,0.8) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 80% at 80% 80%, rgba(90,30,36,0.4) 0%, transparent 60%),
+        linear-gradient(180deg, #0f0c0a 0%, #1a1208 100%);
+    }
+    .cv-intel-community {
+      background:
+        repeating-linear-gradient(90deg, transparent, transparent 28px, rgba(182,155,92,0.06) 28px, rgba(182,155,92,0.06) 29px),
+        repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(182,155,92,0.06) 28px, rgba(182,155,92,0.06) 29px),
+        linear-gradient(135deg, #0a0a0a 0%, #1a1410 100%);
+    }
+    .cv-nightlife-berlin {
+      background:
+        radial-gradient(ellipse 60% 100% at 60% 50%, rgba(40,30,60,0.8) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 30%, rgba(90,30,36,0.3) 0%, transparent 60%),
+        linear-gradient(180deg, #080810 0%, #0a0810 100%);
+    }
+    .cv-signals-algo {
+      background:
+        repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(182,155,92,0.04) 15px, rgba(182,155,92,0.04) 16px),
+        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(182,155,92,0.1) 0%, transparent 70%),
+        linear-gradient(180deg, #0a0a08 0%, #0f0e0a 100%);
+    }
+    .cv-culture-fandom {
+      background:
+        radial-gradient(ellipse 80% 80% at 50% 50%, rgba(182,155,92,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(90,30,36,0.4) 0%, transparent 60%),
+        linear-gradient(45deg, #0f0a06 0%, #0a0a0a 100%);
+    }
+
+    /* Grain overlay on all card visuals */
+    .card-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      background-size: 150px;
+      opacity: 0.5;
+    }
+
+    .card-visual-label {
+      position: absolute;
+      bottom: 0.75rem; left: 1rem;
+      font-family: var(--mono);
+      font-size: 0.48rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(182,155,92,0.55);
+      z-index: 1;
+    }
+
+    .grid-card .card-category { margin-bottom: 0.35rem; }
+    .grid-card .card-headline { font-size: clamp(1rem, 1.3vw, 1.15rem); }
+    .grid-card .card-summary { font-size: 0.82rem; }
+
+    /* ══════════════════ SIGNALS ══════════════════ */
+    #signals {
+      background: #060504;
+      padding: clamp(3.5rem, 7vw, 6rem) 0;
+    }
+
+    .signals-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      margin-bottom: 3rem;
+      gap: 2rem;
+    }
+
+    .signals-title {
+      font-family: var(--mono);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .signals-issue-counter {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dim-dk);
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    .signals-subtitle {
+      font-size: 0.9rem;
+      color: var(--dim-dk);
+      margin-top: 0.5rem;
+      font-weight: 300;
+    }
+
+    .signals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border-dk);
+    }
+
+    .signal-card {
+      padding: 2.25rem;
+      border-right: 1px solid var(--border-dk);
+      border-left: 3px solid var(--oxblood);
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .signal-card:last-child { border-right: none; }
+    .signal-card:hover { background: rgba(90,30,36,0.07); }
+
+    .signal-id {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.35rem;
+    }
+
+    .signal-status-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 1.75rem;
+    }
+    .signal-bar {
+      display: inline-flex;
+      gap: 2px;
+    }
+    .signal-bar span {
+      display: inline-block;
+      width: 7px; height: 9px;
+      background: var(--oxblood);
+    }
+    .signal-bar span.dim { background: rgba(90,30,36,0.25); }
+    .signal-status-text {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim-dk);
+    }
+
+    .signal-obs-label {
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--oxblood);
+      margin-bottom: 0.5rem;
+    }
+    .signal-observation {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: var(--cream);
+      margin-bottom: 2rem;
+    }
+
+    .signal-data {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+    .signal-datum {
+      border-top: 1px solid var(--border-dk);
+      padding-top: 0.5rem;
+    }
+    .sd-label {
+      font-family: var(--mono);
+      font-size: 0.48rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim-dk);
+      margin-bottom: 0.2rem;
+    }
+    .sd-val {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      color: var(--cream);
+    }
+
+    /* ══════════════════ AUDIENCE INTELLIGENCE ══════════════════ */
+    #intelligence {
+      background: var(--cream);
+      padding: clamp(3.5rem, 7vw, 6rem) 0;
+      border-bottom: 1px solid var(--border-lt);
+    }
+
+    .intel-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: end;
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border-lt);
+    }
+
+    .intel-kicker {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--oxblood);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .intel-headline {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 3vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--black);
+    }
+
+    .intel-desc {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--dim-lt);
+      align-self: end;
+    }
+
+    .intel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border-lt);
+    }
+
+    .intel-card {
+      padding: 2.25rem;
+      border-right: 1px solid var(--border-lt);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .intel-card:last-child { border-right: none; }
+    .intel-card:hover { background: #fff; }
+
+    /* Visual bar for intel cards */
+    .intel-card-visual {
+      height: 6px;
+      background: var(--oxblood);
+      margin: -2.25rem -2.25rem 2rem;
+      opacity: 0.7;
+    }
+    .intel-card:nth-child(2) .intel-card-visual { background: var(--gold); opacity: 0.5; }
+    .intel-card:nth-child(3) .intel-card-visual { background: var(--espresso); opacity: 0.6; }
+
+    .intel-dataset {
+      font-family: var(--mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--oxblood);
+      background: rgba(90,30,36,0.07);
+      border: 1px solid rgba(90,30,36,0.15);
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .intel-card-title {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.5vw, 1.3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--black);
+      margin-bottom: 1.5rem;
+    }
+
+    .intel-findings {
+      list-style: none;
+      flex: 1;
+      margin-bottom: 2rem;
+    }
+    .intel-findings li {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: var(--dim-lt);
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border-lt);
+      display: flex;
+      gap: 0.65rem;
+    }
+    .intel-findings li::before {
+      content: '—';
+      color: var(--oxblood);
+      flex-shrink: 0;
+    }
+
+    .intel-access {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(10,10,10,0.25);
+      padding-bottom: 1px;
+      display: inline-block;
+      transition: color 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .intel-access:hover { color: var(--oxblood); border-color: var(--oxblood); }
+
+    /* ══════════════════ NIGHTLIFE ══════════════════ */
+    #nightlife {
+      background: var(--black);
+      border-top: 1px solid var(--border-dk);
+    }
+
+    .nightlife-header {
+      padding: clamp(2.5rem, 5vw, 4rem) 0 0;
+    }
+
+    .nightlife-header-inner {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 0;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-dk);
+    }
+
+    .nightlife-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 1;
+    }
+    .nightlife-title em { font-style: italic; color: rgba(245,241,232,0.45); }
+
+    .nightlife-sub {
+      font-size: 0.85rem;
+      color: var(--dim-dk);
+      max-width: 280px;
+      text-align: right;
+    }
+
+    .dispatch-grid {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+    }
+
+    .dispatch-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      cursor: pointer;
+    }
+
+    /* Philadelphia — warm, glowing, underground */
+    .dispatch-philly {
+      background: #0c0806;
+    }
+    .dispatch-philly::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 40% 40%, rgba(120,40,50,0.5) 0%, transparent 70%),
+        radial-gradient(ellipse 30% 40% at 80% 70%, rgba(182,155,92,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 20% 80%, rgba(90,30,36,0.3) 0%, transparent 70%),
+        repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(182,155,92,0.02) 80px, rgba(182,155,92,0.02) 81px),
+        linear-gradient(180deg, #100806 0%, #0c0604 100%);
+    }
+
+    /* Berlin — cool, blue-shifted, harder */
+    .dispatch-berlin {
+      background: #060608;
+      border-left: 1px solid var(--border-dk);
+    }
+    .dispatch-berlin::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 70% at 50% 30%, rgba(30,20,60,0.8) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 70%, rgba(90,30,36,0.25) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(255,255,255,0.012) 30px, rgba(255,255,255,0.012) 31px),
+        linear-gradient(180deg, #060610 0%, #040408 100%);
+    }
+
+    .dispatch-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.12'/%3E%3C/svg%3E");
+      background-size: 200px;
+      opacity: 0.6;
+    }
+
+    .dispatch-content {
+      position: relative;
+      z-index: 2;
+      padding: 2.5rem;
+      background: linear-gradient(to top, rgba(6,5,4,0.97) 0%, rgba(6,5,4,0.6) 60%, transparent 100%);
+    }
+
+    .dispatch-location {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+    .dispatch-meta-tag {
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim-dk);
+      margin-bottom: 1.25rem;
+    }
+    .dispatch-quote {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--cream);
+      margin-bottom: 2rem;
+      border-left: 2px solid var(--oxblood);
+      padding-left: 1rem;
+    }
+    .dispatch-data {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      border-top: 1px solid var(--border-dk);
+      padding-top: 1rem;
+    }
+    .dd-label {
+      font-family: var(--mono);
+      font-size: 0.46rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dim-dk);
+      margin-bottom: 0.2rem;
+    }
+    .dd-val {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      color: var(--cream);
+    }
+    .dd-val.assessment { color: var(--gold); }
+
+    /* ══════════════════ PULL QUOTE BREAK ══════════════════ */
+    .pq-break {
+      background: var(--oxblood);
+      color: var(--cream);
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+    .pq-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 3rem);
+      text-align: center;
+    }
+    .pq-text {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-style: italic;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--cream);
+      margin-bottom: 1.5rem;
+    }
+    .pq-attr {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,241,232,0.5);
+    }
+
+    /* ══════════════════ ARCHIVE ══════════════════ */
+    #archive {
+      background: #0A0806;
+      padding: clamp(3.5rem, 7vw, 6rem) 0;
+    }
+
+    .archive-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      gap: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-dk);
+    }
+
+    .archive-title-group .archive-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .archive-title-group h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 700;
+      color: var(--cream);
+    }
+
+    .archive-count {
+      text-align: right;
+      font-family: var(--mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.12em;
+      color: var(--dim-dk);
+      line-height: 1.8;
+    }
+
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0;
+      border: 1px solid var(--border-dk);
+    }
+
+    .archive-card {
+      padding: 2rem 1.5rem;
+      cursor: pointer;
+      transition: background 0.25s;
+      border-right: 1px solid var(--border-dk);
+      border-bottom: 2px solid transparent;
+      display: flex;
+      flex-direction: column;
+    }
+    .archive-card:last-child { border-right: none; }
+    .archive-card:hover {
+      background: rgba(245,241,232,0.03);
+      border-bottom-color: var(--oxblood);
+    }
+
+    .archive-num {
+      font-family: var(--mono);
+      font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+      color: var(--gold);
+      font-weight: 500;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .archive-card-title {
+      font-family: var(--serif);
+      font-size: 0.88rem;
+      line-height: 1.35;
+      color: var(--cream);
+      margin-bottom: auto;
+      padding-bottom: 1rem;
+    }
+    .archive-year {
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.12em;
+      color: var(--dim-dk);
+    }
+
+    /* ══════════════════ ABOUT PAGE ══════════════════ */
+    #about-page { padding-top: 62px; background: var(--cream-2); }
+
+    .about-hero {
+      background: var(--black);
+      padding: clamp(4rem, 8vw, 8rem) 0 clamp(3rem, 6vw, 6rem);
+    }
+
+    .about-kicker {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .about-title {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 6vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      color: var(--cream);
+      margin-bottom: 2rem;
+      letter-spacing: -0.02em;
+    }
+    .about-title em { font-style: italic; color: rgba(245,241,232,0.5); }
+
+    .about-intro {
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      line-height: 1.75;
+      color: rgba(245,241,232,0.6);
+      max-width: 700px;
+    }
+
+    .about-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-left: 1px solid var(--border-lt);
+      border-right: 1px solid var(--border-lt);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .about-section {
+      padding: clamp(2.5rem, 5vw, 4rem);
+      border-right: 1px solid var(--border-lt);
+      border-bottom: 1px solid var(--border-lt);
+    }
+    .about-section:nth-child(2n) { border-right: none; }
+    .about-section:nth-last-child(-n+2) { border-bottom: none; }
+
+    .about-sec-label {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--oxblood);
+      margin-bottom: 1rem;
+    }
+
+    .about-sec-title {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 2vw, 1.75rem);
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 1.25rem;
+    }
+
+    .about-sec-body {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--dim-lt);
+    }
+
+    .about-coverage-list {
+      list-style: none;
+      margin-top: 1rem;
+    }
+    .about-coverage-list li {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dim-lt);
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border-lt);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .about-coverage-list li::before { content: '—'; color: var(--oxblood); }
+    .about-coverage-list li:last-child { border-bottom: none; }
+
+    .about-masthead {
+      background: var(--cream);
+      padding: clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3rem);
+      border-top: 1px solid var(--border-lt);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .about-masthead-label {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim-lt);
+      margin-bottom: 2rem;
+    }
+    .masthead-entry {
+      display: flex;
+      gap: 4rem;
+      align-items: baseline;
+    }
+    .masthead-role {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim-lt);
+      min-width: 200px;
+    }
+    .masthead-name {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    /* ══════════════════ FOOTER ══════════════════ */
+    footer {
+      background: #060504;
+      border-top: 1px solid var(--border-gold);
+      padding: clamp(3rem, 5vw, 4rem) 0;
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .footer-brand .footer-wordmark {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+    .footer-wm-culture {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--cream);
+    }
+    .footer-wm-circ {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+    .footer-cc {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--cream);
+    }
+    .footer-cc svg { width: 13px; height: 13px; }
+
+    .footer-tagline {
+      font-size: 0.8rem;
+      color: var(--dim-dk);
+      line-height: 1.6;
+      max-width: 220px;
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .footer-nav a {
+      font-family: var(--mono);
+      font-size: 0.56rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim-dk);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .footer-nav a:hover { color: var(--cream); }
+
+    .footer-right {
+      text-align: right;
+    }
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.1em;
+      color: var(--dim-dk);
+      line-height: 2;
+      margin-bottom: 1.5rem;
+    }
+    .footer-vol {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-weight: 900;
+      font-style: italic;
+      color: rgba(245,241,232,0.04);
+      line-height: 1;
+    }
+
+    /* ══════════════════ RESPONSIVE ══════════════════ */
+    @media (max-width: 1024px) {
+      .intel-head { grid-template-columns: 1fr; gap: 1.5rem; }
+      .intel-desc { text-align: left; }
+    }
+
+    @media (max-width: 960px) {
+      .nav-links { display: none; }
+      .nav-issue { display: none; }
+      .hamburger { display: flex; }
+
+      #hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-right { display: none; }
+      .hero-left { border-right: none; min-height: 85vh; }
+
+      .secondary-inner { grid-template-columns: 1fr; }
+      .secondary-sidebar { display: none; }
+      .stories-row { grid-template-columns: 1fr; }
+      .story-card { border-right: none; border-bottom: 1px solid var(--border-lt); }
+      .story-card:last-child { border-bottom: none; }
+      .story-card .card-arrow { opacity: 1; }
+
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-card { border-right: none; }
+      .grid-card:nth-last-child(-n+3) { border-bottom: 1px solid var(--border-lt); }
+      .grid-card:last-child { border-bottom: none; }
+
+      .signals-head { grid-template-columns: 1fr; }
+      .signals-issue-counter { text-align: left; }
+      .signals-grid { grid-template-columns: 1fr; }
+      .signal-card { border-right: none; border-bottom: 1px solid var(--border-dk); }
+      .signal-card:last-child { border-bottom: none; }
+
+      .intel-grid { grid-template-columns: 1fr; }
+      .intel-card { border-right: none; border-bottom: 1px solid var(--border-lt); }
+      .intel-card:last-child { border-bottom: none; }
+
+      .dispatch-grid { grid-template-columns: 1fr; }
+      .dispatch-card { min-height: 380px; }
+      .dispatch-berlin { border-left: none; border-top: 1px solid var(--border-dk); }
+
+      .archive-grid { grid-template-columns: repeat(2, 1fr); }
+      .archive-card:nth-child(2n) { border-right: none; }
+
+      .nightlife-header-inner { flex-direction: column; align-items: flex-start; }
+      .nightlife-sub { text-align: left; }
+
+      .about-body { grid-template-columns: 1fr; }
+      .about-section { border-right: none; }
+      .about-section:nth-last-child(-n+2) { border-bottom: 1px solid var(--border-lt); }
+      .about-section:last-child { border-bottom: none; }
+
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-nav { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 1rem 1.5rem; }
+      .footer-right { text-align: left; }
+    }
+
+    @media (max-width: 640px) {
+      .archive-grid { grid-template-columns: repeat(2, 1fr); }
+      .masthead-entry { flex-direction: column; gap: 0.3rem; }
+      .masthead-role { min-width: unset; }
+      .dispatch-data { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ══════════════════════════ NAV ══════════════════════════ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <!-- CC Monogram -->
+      <div class="cc-mark">
+        <svg viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text x="0" y="13" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="white">CC</text>
+        </svg>
+      </div>
+      <!-- Wordmark: mirrors logo style -->
+      <div class="wordmark" onclick="showPage('home')">
+        <span class="wm-culture">Culture</span>
+        <span class="wm-circulation">Circulation</span>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a onclick="scrollToSection('secondary')">Culture</a></li>
+      <li><a onclick="scrollToSection('intelligence')">Intelligence</a></li>
+      <li><a onclick="scrollToSection('nightlife')">Nightlife</a></li>
+      <li><a onclick="scrollToSection('signals')">Signals</a></li>
+      <li><a onclick="scrollToSection('archive')">Archive</a></li>
+      <li><a onclick="showPage('about')">About</a></li>
+    </ul>
+
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="nav-issue">Issue 137 &nbsp;·&nbsp; Vol. XII</div>
+      <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="closeMobileAndGo('secondary')">Culture</a>
+  <a onclick="closeMobileAndGo('intelligence')">Intelligence</a>
+  <a onclick="closeMobileAndGo('nightlife')">Nightlife</a>
+  <a onclick="closeMobileAndGo('signals')">Signals</a>
+  <a onclick="closeMobileAndGo('archive')">Archive</a>
+  <a onclick="showPage('about'); closeMenu()">About</a>
+</div>
+
+<!-- ══════════════════════════ HOME PAGE ══════════════════════════ -->
+<div class="page active" id="home-page">
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <!-- Left: editorial text -->
+    <div class="hero-left">
+      <div class="hero-kicker">
+        <span class="oxblood-rule"></span>
+        <span class="hero-kicker-text">Featured Analysis &nbsp;·&nbsp; Issue 137</span>
+      </div>
+      <h1 class="hero-headline">Why Everyone Is Suddenly <em>a DJ</em></h1>
+      <p class="hero-deck">How nightlife became a social identity system for a generation raised online. The booth is no longer where you play music — it's where you become someone.</p>
+      <div class="hero-byline">
+        By <strong>The Editors</strong> &nbsp;·&nbsp; 14 min read &nbsp;·&nbsp; <strong>Culture / Nightlife</strong>
+      </div>
+      <a class="hero-cta">Read the Analysis &nbsp;→</a>
+    </div>
+
+    <!-- Right: editorial visual -->
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="hero-geo">
+          <div class="hg-circle-1"></div>
+          <div class="hg-circle-2"></div>
+          <div class="hg-line-1"></div>
+          <div class="hg-line-2"></div>
+          <div class="hg-rect"></div>
+          <div class="hg-dot" style="top:18%;left:42%"></div>
+          <div class="hg-dot" style="top:62%;left:75%"></div>
+          <div class="hg-dot" style="top:40%;left:22%"></div>
+          <div class="hg-dot" style="top:28%;left:65%"></div>
+          <div class="hg-dot" style="top:80%;left:38%"></div>
+        </div>
+        <div class="hero-vol">137</div>
+        <div class="hero-visual-content">
+          <div class="hero-img-caption">Cult Circulation · Issue 137 · Cover</div>
+          <div class="hero-pull">"The DJ booth became the new blue-check mark sometime around 2023. Nobody decided this. It just happened."</div>
+        </div>
+      </div>
+      <!-- Ticker at the bottom of the right panel -->
+      <div class="hero-ticker">
+        <div class="ticker-track">
+          <span class="ticker-item">Culture</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Intelligence</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Nightlife</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Signals</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Audience Analysis</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Issue 137</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Vol. XII</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Cult Circulation</span><span class="ticker-dot">·</span>
+          <!-- duplicate for seamless loop -->
+          <span class="ticker-item">Culture</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Intelligence</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Nightlife</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Signals</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Audience Analysis</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Issue 137</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Vol. XII</span><span class="ticker-dot">·</span>
+          <span class="ticker-item">Cult Circulation</span><span class="ticker-dot">·</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECONDARY STORIES ── -->
+  <section id="secondary">
+    <div class="secondary-inner">
+      <div class="secondary-sidebar">
+        <div class="secondary-sidebar-label">In This Issue</div>
+        <div style="flex:1"></div>
+        <div class="sidebar-issue-big">137</div>
+        <div class="sidebar-issue-label">Vol. XII · May 2026</div>
+      </div>
+      <div class="stories-row fade-in">
+        <article class="story-card">
+          <div class="card-category">Culture</div>
+          <div class="card-issue">Issue 134</div>
+          <h2 class="card-headline">The Return of Tumblr Taste: How Y2K Internet Aesthetics Became the Blueprint for Gen Z's Visual Identity</h2>
+          <p class="card-summary">An entire generation is reconstructing an internet they never actually lived through — and doing it with total conviction. What that says about nostalgia, authenticity, and digital inheritance.</p>
+          <div class="card-foot">
+            <span class="card-read">8 min read</span>
+            <span class="card-arrow">Read →</span>
+          </div>
+        </article>
+        <article class="story-card">
+          <div class="card-category">Signals</div>
+          <div class="card-issue">Issue 136</div>
+          <h2 class="card-headline">The Death of Perfect Branding: Why Deliberately Flawed Aesthetics Are Winning Consumer Trust</h2>
+          <p class="card-summary">The polished brand era is contracting. What's replacing it isn't authenticity — it's something more deliberately constructed than that, and audiences haven't noticed yet.</p>
+          <div class="card-foot">
+            <span class="card-read">6 min read</span>
+            <span class="card-arrow">Read →</span>
+          </div>
+        </article>
+        <article class="story-card">
+          <div class="card-category">Intelligence</div>
+          <div class="card-issue">Issue 135</div>
+          <h2 class="card-headline">The Influence Gap: What Audience Data Reveals About the Space Between Creator Fame and Brand Value</h2>
+          <p class="card-summary">Follower count and brand equity are decoupling faster than the industry can measure. Here's what the data actually says — and what it means for everyone who's been buying reach.</p>
+          <div class="card-foot">
+            <span class="card-read">11 min read</span>
+            <span class="card-arrow">Read →</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LATEST STORIES GRID ── -->
+  <section id="latest">
+    <div class="wrap">
+      <div class="section-header">
+        <h2 class="section-title-lt">
+          <span class="oxblood-rule"></span>
+          Latest Stories
+        </h2>
+        <a class="section-link">View All →</a>
+      </div>
+      <div class="grid-3 fade-in">
+
+        <article class="grid-card">
+          <div class="card-visual cv-nightlife-philly">
+            <span class="card-visual-label">Nightlife · Philadelphia</span>
+          </div>
+          <div class="card-category">Nightlife</div>
+          <div class="card-issue">Issue 137</div>
+          <h3 class="card-headline">Philadelphia's New Cool Kids</h3>
+          <p class="card-summary">The city's underground has quietly assembled a scene that looks like nothing else in America. We've been watching it for eighteen months.</p>
+          <div class="card-foot">
+            <span class="card-read">5 min read</span>
+            <span class="card-arrow">Read →</span>
+          </div>
+        </article>
+
+        <article class="grid-card">
+          <div class="card-visual cv-culture-parasocial">
+            <span class="card-visual-label">Culture · Digital</span>
+          </div>
+          <div class="card-category">Culture</div>
+          <div class="card-issue">Issue 136</div>
+          <h3 class="card-headline">Parasocial Overcorrection</h3>
+          <p class="card-summary">The audience is punishing authenticity now. After years of demanding it, something has shifted. The parasocial contract is being renegotiated in real time.</p>
+          <div class="card-foot">
+            <span class="card-read">7 min read</span>
+            <span class="card-arrow">Read →</span>
+          </div>
+        </article>
+
+        <article class="grid-card">
+          <div class="card-visual cv-intel-community">
+            <span class="card-visual-label">Intelligence · Research</span>
+          </div>
+          <div class="card-category">Intelligence</div>
+          <div class="card-issue">Issue 135</div>
+          <h3 class="card-headline">When Communities Replace Brands</h3>
+          <p class="card-summary">New longitudinal data from three sectors confirms the trust inversion is structural, not cyclical. Communities are winning.</p>
+          <div class="card-foot">
+            <span class="card-read">9 min read</span>
+            <span class="card-arrow">Read →</span>
+          </div>
+        </article>
+
+        <article class="grid-card">
+          <div class="card-visual cv-nightlife-berlin">
+            <span class="card-visual-label">Nightlife · Berlin</span>
+          </div>
+          <div class="card-category">Nightlife</div>
+          <div class="card-issue">Issue 133</div>
+          <h3 class="card-headline">Berlin After the Berghain Myth</h3>
+          <p class="card-summary">What happens to a city's nightlife identity when its anchor institution becomes a tourist attraction? Berlin is living the answer.</p>
+          <div class="card-foot">
+            <span class="card-read">12 min read</span>
+            <span class="card-arrow">Read →</span>
+          </div>
+        </article>
+
+        <article class="grid-card">
+          <div class="card-visual cv-signals-algo">
+            <span class="card-visual-label">Signals · Platform</span>
+          </div>
+          <div class="card-category">Signals</div>
+          <div class="card-issue">Issue 134</div>
+          <h3 class="card-headline">The Algorithm's Blind Spots</h3>
+          <p class="card-summary">What recommendation engines cannot see, and why that gap is where culture actually forms. The most interesting things still happen off-feed.</p>
+          <div class="card-foot">
+            <span class="card-read">6 min read</span>
+            <span class="card-arrow">Read →</span>
+          </div>
+        </article>
+
+        <article class="grid-card">
+          <div class="card-visual cv-culture-fandom">
+            <span class="card-visual-label">Culture · Fandom</span>
+          </div>
+          <div class="card-category">Culture</div>
+          <div class="card-issue">Issue 132</div>
+          <h3 class="card-headline">Fandom as Infrastructure</h3>
+          <p class="card-summary">How fan communities have quietly built the internet's most durable institutions, and what that means for everyone else trying to build an audience.</p>
+          <div class="card-foot">
+            <span class="card-read">10 min read</span>
+            <span class="card-arrow">Read →</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SIGNALS ── -->
+  <section id="signals">
+    <div class="wrap">
+      <div class="signals-head fade-in">
+        <div>
+          <div class="signals-title">SIGNALS</div>
+          <p class="signals-subtitle">Short-form intelligence briefs tracking cultural acceleration. Updated each issue.</p>
+        </div>
+        <div class="signals-issue-counter">
+          Active Signals: 12<br>
+          Accelerating: 4<br>
+          Emerging: 5<br>
+          Monitoring: 3
+        </div>
+      </div>
+      <div class="signals-grid fade-in">
+
+        <div class="signal-card">
+          <div class="signal-id">Signal 042</div>
+          <div class="signal-status-row">
+            <span class="signal-bar"><span></span><span></span><span></span><span></span></span>
+            <span class="signal-status-text">Accelerating</span>
+          </div>
+          <div class="signal-obs-label">Observation</div>
+          <p class="signal-observation">Consumers increasingly trust communities over brands. Three-year longitudinal data confirms the trust inversion is structural, not cyclical. Brand loyalty metrics are declining while community participation rates hold steady.</p>
+          <div class="signal-data">
+            <div class="signal-datum"><div class="sd-label">Signal Level</div><div class="sd-val">HIGH</div></div>
+            <div class="signal-datum"><div class="sd-label">Location</div><div class="sd-val">Internet / Retail</div></div>
+            <div class="signal-datum"><div class="sd-label">Trend</div><div class="sd-val">↑ ACCELERATING</div></div>
+            <div class="signal-datum"><div class="sd-label">Confidence</div><div class="sd-val">87%</div></div>
+          </div>
+        </div>
+
+        <div class="signal-card">
+          <div class="signal-id">Signal 039</div>
+          <div class="signal-status-row">
+            <span class="signal-bar"><span></span><span></span><span></span><span class="dim"></span></span>
+            <span class="signal-status-text">Emerging</span>
+          </div>
+          <div class="signal-obs-label">Observation</div>
+          <p class="signal-observation">Nightlife is functioning as a credibility system. Being seen at the right events is replacing the follower count as the primary status signal among creative professionals in major cities.</p>
+          <div class="signal-data">
+            <div class="signal-datum"><div class="sd-label">Signal Level</div><div class="sd-val">MEDIUM-HIGH</div></div>
+            <div class="signal-datum"><div class="sd-label">Location</div><div class="sd-val">Global Cities</div></div>
+            <div class="signal-datum"><div class="sd-label">Trend</div><div class="sd-val">↑ EMERGING</div></div>
+            <div class="signal-datum"><div class="sd-label">Confidence</div><div class="sd-val">73%</div></div>
+          </div>
+        </div>
+
+        <div class="signal-card">
+          <div class="signal-id">Signal 041</div>
+          <div class="signal-status-row">
+            <span class="signal-bar"><span></span><span></span><span class="dim"></span><span class="dim"></span></span>
+            <span class="signal-status-text">Monitoring</span>
+          </div>
+          <div class="signal-obs-label">Observation</div>
+          <p class="signal-observation">The era of the polished personal brand is contracting. Audiences are increasingly rewarding imperfection, contradiction, and institutional affiliation over individual curation at scale.</p>
+          <div class="signal-data">
+            <div class="signal-datum"><div class="sd-label">Signal Level</div><div class="sd-val">MEDIUM</div></div>
+            <div class="signal-datum"><div class="sd-label">Location</div><div class="sd-val">Social / Digital</div></div>
+            <div class="signal-datum"><div class="sd-label">Trend</div><div class="sd-val">→ SHIFTING</div></div>
+            <div class="signal-datum"><div class="sd-label">Confidence</div><div class="sd-val">61%</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AUDIENCE INTELLIGENCE ── -->
+  <section id="intelligence">
+    <div class="wrap">
+      <div class="intel-head fade-in">
+        <div>
+          <div class="intel-kicker"><span class="oxblood-rule"></span>Audience Intelligence</div>
+          <h2 class="intel-headline">Research investigations into how audiences form, shift, and behave.</h2>
+        </div>
+        <p class="intel-desc">We treat audience data as editorial material. These are not white papers — they are reported investigations backed by primary research. Methodology available for all published reports.</p>
+      </div>
+      <div class="intel-grid fade-in">
+
+        <div class="intel-card">
+          <div class="intel-card-visual"></div>
+          <div class="intel-dataset">Dataset: 2.4M listeners analyzed</div>
+          <h3 class="intel-card-title">Billboard Audience Intelligence Report</h3>
+          <ul class="intel-findings">
+            <li>Genre loyalty peaks at 19, drops at 23, recovers at 31 — a pattern that maps to life transitions, not taste shifts</li>
+            <li>Streaming behavior diverges sharply from festival attendance, revealing two distinct listening identities within single users</li>
+            <li>Secondary markets reveal primary intent better than presale data; resale velocity predicts breakout potential 6 weeks out</li>
+          </ul>
+          <a class="intel-access">Access Report →</a>
+        </div>
+
+        <div class="intel-card">
+          <div class="intel-card-visual"></div>
+          <div class="intel-dataset">Dataset: 847 creator profiles</div>
+          <h3 class="intel-card-title">The Influence Gap</h3>
+          <ul class="intel-findings">
+            <li>Follower count explains only 23% of brand value variance — the other 77% lives in community structure and content velocity</li>
+            <li>Community depth predicts conversion 4× better than reach; micro-audiences consistently outperform macro audiences on action metrics</li>
+            <li>The gap between fame and influence is widening. Brands paying for fame are not purchasing influence.</li>
+          </ul>
+          <a class="intel-access">Access Report →</a>
+        </div>
+
+        <div class="intel-card">
+          <div class="intel-card-visual"></div>
+          <div class="intel-dataset">Dataset: 14,000 support interactions</div>
+          <h3 class="intel-card-title">Xfinity Customer Friction Analysis</h3>
+          <ul class="intel-findings">
+            <li>67% of churn-risk signals appear 90 days before cancellation — detectable through language pattern shifts in support interactions</li>
+            <li>Friction mapping reveals 3 critical drop-off points accounting for 84% of voluntary churn; none are product-related</li>
+            <li>Language pattern analysis predicts escalation with 81% accuracy, enabling intervention before frustration becomes decision</li>
+          </ul>
+          <a class="intel-access">Access Report →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NIGHTLIFE DISPATCHES ── -->
+  <section id="nightlife">
+    <div class="wrap nightlife-header">
+      <div class="nightlife-header-inner fade-in">
+        <h2 class="nightlife-title">Nightlife<br><em>Dispatches</em></h2>
+        <p class="nightlife-sub">Field observations from underground to mainstream. First-person reporting from the floor.</p>
+      </div>
+    </div>
+    <div class="dispatch-grid fade-in">
+
+      <div class="dispatch-card dispatch-philly">
+        <div class="dispatch-grain"></div>
+        <div class="dispatch-content">
+          <div class="dispatch-location">Philadelphia &nbsp;—&nbsp; 02:11 AM</div>
+          <div class="dispatch-meta-tag">Issue 137 · Field Report</div>
+          <blockquote class="dispatch-quote">"Everyone suddenly looked like they inherited a Tumblr archive and a retirement account. The DJ had been playing for six hours. Nobody left."</blockquote>
+          <div class="dispatch-data">
+            <div><div class="dd-label">Observed</div><div class="dd-val">May 2026 · Warehouse District</div></div>
+            <div><div class="dd-label">Attendance</div><div class="dd-val">~400</div></div>
+            <div><div class="dd-label">Assessment</div><div class="dd-val assessment">WATCH THIS CITY</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dispatch-card dispatch-berlin">
+        <div class="dispatch-grain"></div>
+        <div class="dispatch-content">
+          <div class="dispatch-location">Berlin &nbsp;—&nbsp; 03:47 AM</div>
+          <div class="dispatch-meta-tag">Issue 134 · Field Report</div>
+          <blockquote class="dispatch-quote">"The queue was three hours long and half the people in it had never heard of the club. This is what happens when mythology outpaces the music."</blockquote>
+          <div class="dispatch-data">
+            <div><div class="dd-label">Observed</div><div class="dd-val">March 2026 · Mitte</div></div>
+            <div><div class="dd-label">Attendance</div><div class="dd-val">N/A</div></div>
+            <div><div class="dd-label">Assessment</div><div class="dd-val assessment">POST-PEAK</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── PULL QUOTE ── -->
+  <div class="pq-break fade-in">
+    <div class="pq-inner">
+      <p class="pq-text">"Culture doesn't move in straight lines. It spirals, doubles back, borrows from the dead, and arrives somewhere no one predicted."</p>
+      <div class="pq-attr">Cult Circulation &nbsp;·&nbsp; Issue 121 &nbsp;·&nbsp; The Intimacy Economy</div>
+    </div>
+  </div>
+
+  <!-- ── ARCHIVE ── -->
+  <section id="archive">
+    <div class="wrap">
+      <div class="archive-head fade-in">
+        <div class="archive-title-group">
+          <div class="archive-label">From the Archive</div>
+          <h2>Twelve volumes.<br>One continuous investigation.</h2>
+        </div>
+        <div class="archive-count">
+          137 Issues Published<br>
+          Vol. I – Vol. XII<br>
+          2018 – Present
+        </div>
+      </div>
+      <div class="archive-grid fade-in">
+        <div class="archive-card">
+          <div class="archive-num">121</div>
+          <div class="archive-card-title">The Intimacy Economy</div>
+          <div class="archive-year">2025</div>
+        </div>
+        <div class="archive-card">
+          <div class="archive-num">118</div>
+          <div class="archive-card-title">Against Optimization</div>
+          <div class="archive-year">2025</div>
+        </div>
+        <div class="archive-card">
+          <div class="archive-num">112</div>
+          <div class="archive-card-title">What Rave Culture Knew</div>
+          <div class="archive-year">2024</div>
+        </div>
+        <div class="archive-card">
+          <div class="archive-num">104</div>
+          <div class="archive-card-title">The Attention Collapse</div>
+          <div class="archive-year">2024</div>
+        </div>
+        <div class="archive-card">
+          <div class="archive-num">097</div>
+          <div class="archive-card-title">Community as Product</div>
+          <div class="archive-year">2023</div>
+        </div>
+        <div class="archive-card">
+          <div class="archive-num">088</div>
+          <div class="archive-card-title">After the Algorithm</div>
+          <div class="archive-year">2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end home-page -->
+
+<!-- ══════════════════════════ ABOUT PAGE ══════════════════════════ -->
+<div class="page" id="about-page">
+  <div class="about-hero">
+    <div class="wrap">
+      <div class="about-kicker"><span class="oxblood-rule"></span>About the Publication</div>
+      <h1 class="about-title">Culture Intelligence,<br><em>Documented.</em></h1>
+      <p class="about-intro">Cult Circulation is an independent culture intelligence publication tracking how culture moves through music, fandom, nightlife, internet communities, fashion, technology, and the systems that govern influence. We report on what's shifting before the mainstream catches it — and we explain why.</p>
+    </div>
+  </div>
+
+  <div class="about-body">
+    <div class="about-section">
+      <div class="about-sec-label">Editorial Mission</div>
+      <h2 class="about-sec-title">What Is Cult Circulation?</h2>
+      <p class="about-sec-body">Cult Circulation was founded on a single conviction: that culture moves in ways most publications aren't equipped to follow. The typical culture beat chases what's already visible. We document what's moving underneath — the signals that precede the trend, the communities that precede the mainstream, the moments that precede the narrative.<br><br>We combine editorial storytelling with audience intelligence and first-person field observation. The result is a publication that can sit alongside Bloomberg in the morning and Resident Advisor at midnight and feel at home in both contexts.</p>
+    </div>
+    <div class="about-section">
+      <div class="about-sec-label">Areas of Coverage</div>
+      <h2 class="about-sec-title">What We Cover</h2>
+      <p class="about-sec-body">Our coverage spans the full ecosystem of cultural production and reception.</p>
+      <ul class="about-coverage-list">
+        <li>Music &amp; Sound Culture</li>
+        <li>Fandom &amp; Audience Systems</li>
+        <li>Nightlife &amp; Underground Scenes</li>
+        <li>Internet Communities &amp; Digital Culture</li>
+        <li>Fashion &amp; Visual Identity</li>
+        <li>Influence &amp; Creator Economy</li>
+        <li>Technology &amp; Platform Dynamics</li>
+        <li>Audience Intelligence &amp; Research</li>
+      </ul>
+    </div>
+    <div class="about-section">
+      <div class="about-sec-label">Research Philosophy</div>
+      <h2 class="about-sec-title">How We Work</h2>
+      <p class="about-sec-body">We treat audience data as editorial material. Our research investigations combine primary data collection with qualitative fieldwork — which means our intelligence reports read like reported pieces, not white papers.<br><br>We conduct long-form field observations. We build original datasets. We interview people inside the systems we cover, not just adjacent to them. Our Signals briefs are tracked longitudinally, so readers can follow how a cultural shift develops across months and years.</p>
+    </div>
+    <div class="about-section">
+      <div class="about-sec-label">Standards</div>
+      <h2 class="about-sec-title">Editorial Standards</h2>
+      <p class="about-sec-body">Every analysis published in Cult Circulation is subject to editorial review. We distinguish clearly between observation, inference, and conclusion. When we make a claim about cultural direction, we show our reasoning. When our data has limitations, we say so.<br><br>We do not publish sponsored content. We do not accept advertising that conflicts with editorial independence. The Audience Intelligence section presents real research from real datasets. Methodology is available for all published reports.</p>
+    </div>
+  </div>
+
+  <div class="about-masthead">
+    <div class="about-masthead-label">Masthead</div>
+    <div class="masthead-entry">
+      <div class="masthead-role">Founded and Directed by</div>
+      <div class="masthead-name">Lyles</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-wordmark" onclick="showPage('home')">
+          <div class="footer-cc">
+            <svg viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="0" y="13" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#0A0A0A">CC</text>
+            </svg>
+          </div>
+          <span class="footer-wm-culture">Culture</span>
+          <span class="footer-wm-circ">Circulation</span>
+        </div>
+        <p class="footer-tagline">Documenting cultural movement since Issue 001. Culture intelligence for those paying attention.</p>
+      </div>
+      <nav class="footer-nav">
+        <a onclick="scrollToSection('secondary')">Culture</a>
+        <a onclick="scrollToSection('intelligence')">Intelligence</a>
+        <a onclick="scrollToSection('nightlife')">Nightlife</a>
+        <a onclick="scrollToSection('signals')">Signals</a>
+        <a onclick="scrollToSection('archive')">Archive</a>
+        <a onclick="showPage('about')">About</a>
+      </nav>
+      <div class="footer-right">
+        <div class="footer-copy">
+          © 2026 Cult Circulation<br>
+          All rights reserved.<br>
+          Vol. XII &nbsp;·&nbsp; Issue 137
+        </div>
+        <div class="footer-vol">CC</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── SCROLL ──
+  const nav = document.getElementById('nav');
+  const progressBar = document.getElementById('progressBar');
+
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = docH > 0 ? (window.scrollY / docH * 100) + '%' : '0';
+  }, { passive: true });
+
+  // ── PAGE SWITCHING ──
+  function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById(page + '-page');
+    if (target) target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // re-observe fade-ins on new page
+    setTimeout(initFadeIns, 50);
+  }
+
+  function scrollToSection(id) {
+    showPage('home');
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 70, behavior: 'smooth' });
+    }, 120);
+  }
+
+  // ── MOBILE MENU ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  function toggleMenu() {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  }
+  function closeMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+  function closeMobileAndGo(section) {
+    closeMenu();
+    scrollToSection(section);
+  }
+  document.addEventListener('click', e => {
+    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) closeMenu();
+  });
+
+  // ── FADE IN OBSERVER ──
+  function initFadeIns() {
+    const els = document.querySelectorAll('.fade-in:not(.visible)');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+    els.forEach(el => obs.observe(el));
+  }
+
+  // Stagger children of grid containers
+  function staggerChildren(parentSel, childSel) {
+    document.querySelectorAll(parentSel).forEach(parent => {
+      parent.querySelectorAll(childSel).forEach((child, i) => {
+        child.style.transitionDelay = (i * 0.06) + 's';
+      });
+    });
+  }
+
+  staggerChildren('.grid-3', '.grid-card');
+  staggerChildren('.signals-grid', '.signal-card');
+  staggerChildren('.intel-grid', '.intel-card');
+  staggerChildren('.archive-grid', '.archive-card');
+  staggerChildren('.stories-row', '.story-card');
+  initFadeIns();
+</script>
+</body>
+</html>
